@@ -1,0 +1,277 @@
+/* ==========================================================================
+   Lumen — styles.css
+   All presentation lives in this file; index.html contains none of it.
+   Naming: blocks and elements use BEM (block__element, block--modifier),
+   except a few short class names kept from the markup for readability.
+   Selectors target classes only — never ids — so structure and style
+   stay independent.
+   ==========================================================================
+   Contents:
+     1. Design tokens
+     2. Base / reset
+     3. Layout
+     4. Navigation
+     5. Sections & typography
+     6. Buttons
+     7. Feature cards
+     8. Footer
+   ========================================================================== */
+
+
+/* --------------------------------------------------------------------------
+   1. Design tokens
+   One place to retheme the whole page: light, airy, low-contrast.
+   -------------------------------------------------------------------------- */
+:root {
+  /* Colour */
+  --color-bg:           #fbfaf8;   /* warm off-white        */
+  --color-surface:      #ffffff;   /* cards                 */
+  --color-border:       #e8e5df;   /* hairlines             */
+  --color-text:         #26241f;   /* near-black, softened  */
+  --color-text-muted:   #6f6a61;   /* secondary text        */
+  --color-accent:       #3563e9;   /* the only saturated hue */
+  --color-accent-hover: #2449b8;
+
+  /* Type */
+  --font-body: "Inter", ui-sans-serif, system-ui, -apple-system,
+               "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  --text-small:   0.875rem;
+  --text-base:    1.0625rem;
+  --text-medium:  1.25rem;
+  --text-large:   clamp(2rem, 1.4rem + 2.6vw, 3rem);  /* fluid heading */
+
+  /* Spacing — deliberately generous */
+  --space-xs:  0.5rem;
+  --space-s:   1rem;
+  --space-m:   2rem;
+  --space-l:   4rem;
+  --space-xl:  7.5rem;
+  --measure:   46rem;               /* comfortable line length */
+
+  /* Misc */
+  --radius:    14px;
+  --shadow:    0 1px 2px rgba(38, 36, 31, 0.04),
+              0 8px 24px rgba(38, 36, 31, 0.05);
+  --ease:      180ms ease;
+}
+
+
+/* --------------------------------------------------------------------------
+   2. Base / reset
+   -------------------------------------------------------------------------- */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  background-color: var(--color-bg);
+  color: var(--color-text);
+  font-family: var(--font-body);
+  font-size: var(--text-base);
+  line-height: 1.7;
+  -webkit-font-smoothing: antialiased;
+}
+
+h1,
+h2,
+h3,
+p {
+  margin: 0;                 /* spacing comes from tokens, not defaults */
+  overflow-wrap: break-word;
+}
+
+a {
+  color: var(--color-accent);
+  text-decoration: none;
+  transition: color var(--ease);
+}
+
+a:hover {
+  color: var(--color-accent-hover);
+}
+
+:focus-visible {
+  outline: 2px solid var(--color-accent);
+  outline-offset: 3px;
+  border-radius: 4px;
+}
+
+
+/* --------------------------------------------------------------------------
+   3. Layout
+   One centred wrapper does all horizontal spacing.
+   -------------------------------------------------------------------------- */
+.wrapper {
+  width: 100%;
+  max-width: var(--measure);
+  margin-inline: auto;
+  padding-inline: var(--space-m);
+}
+
+
+/* --------------------------------------------------------------------------
+   4. Navigation
+   Sticky, translucent header; anchor links jump between sections.
+   -------------------------------------------------------------------------- */
+.site-header {
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  background-color: rgba(251, 250, 248, 0.85);
+  backdrop-filter: blur(10px);
+  border-bottom: 1px solid var(--color-border);
+}
+
+.nav-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-m);
+  padding-block: var(--space-s);
+}
+
+.brand {
+  font-weight: 600;
+  font-size: var(--text-medium);
+  letter-spacing: -0.01em;
+  color: var(--color-text);
+}
+
+.brand:hover {
+  color: var(--color-accent);
+}
+
+.nav-list {
+  display: flex;
+  gap: var(--space-m);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.nav-link {
+  color: var(--color-text-muted);
+  font-size: var(--text-small);
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  padding-block: var(--space-xs);   /* larger tap target */
+}
+
+.nav-link:hover {
+  color: var(--color-text);
+}
+
+
+/* --------------------------------------------------------------------------
+   5. Sections & typography
+   Wide vertical rhythm: each section breathes top and bottom.
+   -------------------------------------------------------------------------- */
+main {
+  scroll-behavior: smooth;
+}
+
+.section {
+  padding-block: var(--space-xl);
+  border-bottom: 1px solid var(--color-border);
+}
+
+.section:last-of-type {
+  border-bottom: 0;
+}
+
+.eyebrow {
+  margin-bottom: var(--space-s);
+  color: var(--color-accent);
+  font-size: var(--text-small);
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+}
+
+.section-heading {
+  max-width: 34rem;
+  margin-bottom: var(--space-m);
+  font-size: var(--text-large);
+  font-weight: 600;
+  line-height: 1.15;
+  letter-spacing: -0.02em;
+}
+
+.lead {
+  max-width: 36rem;
+  margin-bottom: var(--space-m);
+  font-size: var(--text-medium);
+  line-height: 1.6;
+  color: var(--color-text-muted);
+}
+
+
+/* --------------------------------------------------------------------------
+   6. Buttons
+   The --primary suffix is the only variant; hover only shifts colour,
+   so nothing jumps around on interaction.
+   -------------------------------------------------------------------------- */
+.button {
+  display: inline-block;
+  padding: 0.875rem 1.75rem;
+  border-radius: 999px;            /* pill */
+  font-size: var(--text-base);
+  font-weight: 500;
+}
+
+.button-primary {
+  background-color: var(--color-accent);
+  color: #ffffff;
+}
+
+.button-primary:hover {
+  background-color: var(--color-accent-hover);
+  color: #ffffff;
+}
+
+
+/* --------------------------------------------------------------------------
+   7. Feature cards
+   One column on narrow screens, three when there is room.
+   -------------------------------------------------------------------------- */
+.feature-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(13rem, 1fr));
+  gap: var(--space-m);
+}
+
+.card {
+  background-color: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  padding: var(--space-m);
+}
+
+.card-title {
+  margin-bottom: var(--space-s);
+  font-size: var(--text-medium);
+  font-weight: 600;
+  letter-spacing: -0.01em;
+}
+
+.card-text {
+  color: var(--color-text-muted);
+  font-size: var(--text-base);
+  line-height: 1.65;
+}
+
+
+/* --------------------------------------------------------------------------
+   8. Footer
+   -------------------------------------------------------------------------- */
+.site-footer {
+  padding-block: var(--space-l);
+  border-top: 1px solid var(--color-border);
+  color: var(--color-text-muted);
+  font-size: var(--text-small);
+}
